@@ -1,0 +1,45 @@
+[package]
+name = "policy_gateway"
+version = "1.0.0"
+edition = "2021"
+authors = ["Agent Governance Contributors"]
+description = "Policy Gateway for Agent Governance - enforces novel language reporting requirements"
+license = "MIT"
+readme = "../README.md"
+repository = "https://github.com/your-org/agent-governance"
+keywords = ["ai", "agents", "governance", "observability"]
+categories = ["web-programming", "development-tools"]
+
+[dependencies]
+# Web framework
+axum = "0.7"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+# Async runtime
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Optional: For production deployments
+# uuid = { version = "1", features = ["v4", "serde"] }
+# sqlx = { version = "0.7", features = ["runtime-tokio", "postgres"] }
+# redis = { version = "0.24", features = ["tokio-comp"] }
+
+[dev-dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

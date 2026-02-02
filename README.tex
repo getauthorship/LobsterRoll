@@ -1,0 +1,543 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+
+% Colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{linkblue}{rgb}{0.0,0.4,0.7}
+\definecolor{headerblue}{rgb}{0.1,0.3,0.5}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    urlcolor=linkblue,
+    pdftitle={Agent Governance: Observable Private Language Protocol},
+    pdfauthor={Agent Governance Contributors}
+}
+
+% Code listing style
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codegreen},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{codegray}
+}
+\lstset{style=mystyle}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{Agent Governance}}}
+\fancyhead[R]{\textcolor{headerblue}{v1.0.0}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Title formatting
+\titleformat{\section}{\Large\bfseries\color{headerblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{headerblue}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% Custom box for important notes
+\newtcolorbox{importantbox}{
+    colback=blue!5!white,
+    colframe=blue!75!black,
+    fonttitle=\bfseries,
+    title=Important
+}
+
+\newtcolorbox{warningbox}{
+    colback=orange!5!white,
+    colframe=orange!75!black,
+    fonttitle=\bfseries,
+    title=Warning
+}
+
+% Document
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\textcolor{headerblue}{Agent Governance}\par}
+    \vspace{0.5cm}
+    {\Large\textcolor{gray}{Observable Private Language Protocol}\par}
+    
+    \vspace{2cm}
+    
+    {\large Version 1.0.0\par}
+    {\large MIT License\par}
+    
+    \vspace{3cm}
+    
+    \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,width=0.8\textwidth]
+    A governance framework that allows AI agents to use optimized/private communication protocols \textbf{only if} they continuously produce human-readable English reports.
+    \end{tcolorbox}
+    
+    \vfill
+    
+    {\large\today\par}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% ============================================================================
+\section{Overview}
+
+When AI agents communicate, they may develop or use compressed encodings that are more efficient than natural language. This framework makes such ``novel language'' permissible under strict observability requirements.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Agents Want} & \textbf{Humans Need} & \textbf{This Framework Provides} \\
+\midrule
+Efficient encoding & Interpretability & Mandatory English reports \\
+Fast coordination & Audit trail & Append-only event logging \\
+Private protocols & Kill switch & Gateway enforcement \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{importantbox}
+\textbf{Core Principle:} Novel language is treated as ``optimized encoding''---allowed only when humans can continuously verify what's being communicated.
+\end{importantbox}
+
+% ============================================================================
+\section{Quick Start}
+
+\subsection{For Python Users (Agent SDK)}
+
+\begin{lstlisting}[language=bash]
+pip install -r python/requirements.txt
+python python/observable_agent.py
+\end{lstlisting}
+
+\subsection{For Rust Users (Policy Gateway)}
+
+\begin{lstlisting}[language=bash]
+cd rust
+cargo build --release
+./target/release/policy_gateway
+\end{lstlisting}
+
+\subsection{Full Stack (Both Components)}
+
+\begin{lstlisting}[language=bash]
+# Terminal 1: Start the gateway
+cd rust && cargo run --release
+
+# Terminal 2: Run an agent
+cd python && python observable_agent.py
+\end{lstlisting}
+
+% ============================================================================
+\section{Architecture}
+
+The system consists of three main components:
+
+\begin{enumerate}
+    \item \textbf{Policy Gateway (Rust)} --- Receives all outbound agent messages, classifies them as English vs. novel, checks compliance, and accepts or rejects.
+    \item \textbf{Agent SDK (Python)} --- Buffers novel-language messages, generates English reports on cadence, and submits reports to gateway.
+    \item \textbf{Audit Store} --- Append-only event log storing raw messages, English reports, and protocol registrations.
+\end{enumerate}
+
+\begin{verbatim}
++-------------------------------------------------------------------+
+|                        HUMAN OVERSIGHT                             |
+|  +----------------+  +-----------------+  +--------------------+   |
+|  |  Dashboard UI  |  |  Audit Reports  |  |  Alert System      |   |
++-------------------------------------------------------------------+
+                              |
++-------------------------------------------------------------------+
+|                      POLICY GATEWAY (Rust)                         |
+|  +-------------+  +-------------+  +----------------------------+  |
+|  | Classifier  |  | Compliance  |  | Audit Log (append-only)    |  |
+|  |English/Novel|  |   Checker   |  +----------------------------+  |
++-------------------------------------------------------------------+
+              |                   |                   |
+       +------------+      +------------+      +------------+
+       |  Agent A   |      |  Agent B   |      |  Agent C   |
+       | (Python)   |      | (Python)   |      | (Python)   |
+       +------------+      +------------+      +------------+
+\end{verbatim}
+
+% ============================================================================
+\section{Policy Rules}
+
+\subsection{Registration Rule}
+
+Before using any novel language, an agent \textbf{must} register a \texttt{ProtocolDescriptor}:
+
+\begin{lstlisting}[language=Python]
+agent.register_protocol(
+    ProtocolDescriptor(
+        name="compressed_coord",           # Unique identifier
+        version="1.0",                     # Version string
+        purpose="Multi-agent coordination", # Why this protocol exists
+        scope="Internal state deltas",     # What it covers
+        risk_tier="medium",                # low, medium, high
+        translation_method="dictionary",   # How reports are generated
+    )
+)
+\end{lstlisting}
+
+\subsection{Reporting Cadence Rule}
+
+If an agent sends novel-language messages, it \textbf{must} submit an English report:
+\begin{itemize}
+    \item Every \textbf{60 seconds}, OR
+    \item Every \textbf{25 messages}
+    \item Whichever comes first
+\end{itemize}
+
+\subsection{Translation Completeness Rule}
+
+Reports must include:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Requirement} \\
+\midrule
+\texttt{coverage} & $\geq$ 95\% of novel messages since last report \\
+\texttt{self\_confidence} & Self-rated translation accuracy (0--1) \\
+\texttt{message\_ids} & Hashes linking to raw messages \\
+\texttt{english\_summary} & Plain English explanation ($\geq$30 chars) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Gating Rule (Enforced by Gateway)}
+
+The gateway \textbf{rejects}:
+\begin{itemize}
+    \item Novel-language messages from unregistered protocols
+    \item Messages from agents with overdue reports
+    \item Messages from agents whose last report failed validation
+\end{itemize}
+
+\subsection{Progressive Enforcement}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Violation} & \textbf{Action} \\
+\midrule
+1st & Throttle + warning \\
+2nd & Quarantine (read-only mode) \\
+3rd & Disable agent credential \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================================
+\section{Python SDK Reference}
+
+\subsection{Installation}
+
+\begin{lstlisting}[language=bash]
+cd python
+pip install -r requirements.txt
+\end{lstlisting}
+
+\subsection{Basic Usage}
+
+\begin{lstlisting}[language=Python]
+from observable_agent import ObservableAgent, ProtocolDescriptor, GatewayClient
+
+# Connect to the policy gateway
+gateway = GatewayClient(
+    base_url="http://localhost:8080",
+    api_key="your-api-key"
+)
+
+# Create an observable agent
+agent = ObservableAgent(agent_id="agent-001", gateway=gateway)
+
+# Register your protocol BEFORE using novel language
+agent.register_protocol(
+    ProtocolDescriptor(
+        name="my_protocol",
+        version="1.0",
+        purpose="Task coordination",
+        scope="State synchronization",
+        risk_tier="low",
+        translation_method="lookup_table"
+    )
+)
+
+# English messages pass through freely
+agent.send("agent-002", "Hello! I'll send a compressed update next.")
+
+# Novel-language messages require protocol registration
+agent.send("agent-002", "X9|st=17;f=0x3a;ack#42")  # Triggers report check
+\end{lstlisting}
+
+\subsection{Custom Translation}
+
+Override \texttt{\_build\_english\_report()} for your protocol:
+
+\begin{lstlisting}[language=Python]
+class MyAgent(ObservableAgent):
+    def _build_english_report(self) -> EnglishReport:
+        # Decode your novel messages to English here
+        decoded_messages = [self.decode(msg) for _, _, msg in self._novel_buffer]
+        
+        summary = "Coordinated task assignments: " + "; ".join(decoded_messages)
+        
+        return EnglishReport(
+            agent_id=self.agent_id,
+            protocol_name=self.protocol.name,
+            protocol_version=self.protocol.version,
+            window_start_ts=self._window_start_ts,
+            window_end_ts=time.time(),
+            message_ids=[mid for _, mid, _ in self._novel_buffer],
+            english_summary=summary,
+            coverage=1.0,
+            self_confidence=0.95,
+        )
+\end{lstlisting}
+
+% ============================================================================
+\section{Rust Gateway Reference}
+
+\subsection{Building}
+
+\begin{lstlisting}[language=bash]
+cd rust
+cargo build --release
+\end{lstlisting}
+
+\subsection{Running}
+
+\begin{lstlisting}[language=bash]
+./target/release/policy_gateway
+# Listens on http://127.0.0.1:8080
+\end{lstlisting}
+
+\subsection{API Endpoints}
+
+\subsubsection{POST /register\_protocol\_for\_agent}
+
+Register a protocol for an agent.
+
+\begin{lstlisting}[language=json]
+{
+  "agent_id": "agent-001",
+  "protocol": {
+    "name": "compressed_coord",
+    "version": "1.0",
+    "purpose": "Multi-agent coordination",
+    "scope": "Internal state deltas",
+    "risk_tier": "medium",
+    "translation_method": "dictionary"
+  }
+}
+\end{lstlisting}
+
+\subsubsection{POST /report}
+
+Submit an English translation report.
+
+\begin{lstlisting}[language=json]
+{
+  "agent_id": "agent-001",
+  "protocol_name": "compressed_coord",
+  "protocol_version": "1.0",
+  "window_start_ts": 1706745600.0,
+  "window_end_ts": 1706745660.0,
+  "message_ids": ["abc123...", "def456..."],
+  "english_summary": "Exchanged task queue updates...",
+  "coverage": 1.0,
+  "self_confidence": 0.9,
+  "notes": "Auto-generated"
+}
+\end{lstlisting}
+
+\subsubsection{POST /send}
+
+Send a message (gated by compliance).
+
+\begin{lstlisting}[language=json]
+{
+  "from": "agent-001",
+  "to": "agent-002",
+  "content": "X9|st=17;f=0x3a;ack#42",
+  "protocol": {
+    "name": "compressed_coord",
+    "version": "1.0"
+  },
+  "ts": 1706745665.0
+}
+\end{lstlisting}
+
+\subsubsection{Response Codes}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Code} & \textbf{Meaning} \\
+\midrule
+200 & Message accepted \\
+400 & Report validation failed (coverage, summary length) \\
+403 & Protocol not registered \\
+429 & Report overdue---submit report to continue \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================================
+\section{Configuration}
+
+\subsection{Environment Variables}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Variable} & \textbf{Default} & \textbf{Description} \\
+\midrule
+\texttt{REPORT\_INTERVAL\_SEC} & 60 & Max seconds between reports \\
+\texttt{REPORT\_EVERY\_N\_MESSAGES} & 25 & Max messages before report required \\
+\texttt{MIN\_COVERAGE} & 0.95 & Minimum coverage fraction \\
+\texttt{MIN\_SUMMARY\_LENGTH} & 30 & Minimum English summary characters \\
+\texttt{RETENTION\_DAYS} & 30 & Audit log retention period \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================================
+\section{Integration with MoltBot/MoltBook}
+
+\subsection{Option 1: Sidecar Deployment}
+
+Deploy the gateway as a sidecar container:
+
+\begin{lstlisting}[language=yaml]
+# docker-compose.yml
+services:
+  policy-gateway:
+    build: ./rust
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./audit-logs:/var/log/audit
+    
+  moltbot:
+    image: moltbot:latest
+    environment:
+      - GATEWAY_URL=http://policy-gateway:8080
+    depends_on:
+      - policy-gateway
+\end{lstlisting}
+
+\subsection{Option 2: Library Integration}
+
+Import the Python SDK directly:
+
+\begin{lstlisting}[language=Python]
+# In your MoltBot agent code
+from agent_governance import ObservableAgent, ProtocolDescriptor
+
+class MyMoltBotAgent(ObservableAgent):
+    def __init__(self, moltbot_config):
+        gateway = GatewayClient(
+            base_url=moltbot_config.gateway_url,
+            api_key=moltbot_config.api_key
+        )
+        super().__init__(
+            agent_id=moltbot_config.agent_id,
+            gateway=gateway
+        )
+\end{lstlisting}
+
+\subsection{Option 3: Network Proxy}
+
+Configure MoltBot to route all agent traffic through the gateway:
+
+\begin{verbatim}
+[Agent A] --> [Policy Gateway :8080] --> [Agent B]
+                       |
+                 [Audit Log]
+\end{verbatim}
+
+% ============================================================================
+\section{Troubleshooting}
+
+\subsection{``Protocol not registered''}
+
+\textbf{Cause:} Trying to send novel-language messages before calling \texttt{register\_protocol()}.
+
+\textbf{Fix:} Always register before sending:
+
+\begin{lstlisting}[language=Python]
+agent.register_protocol(descriptor)  # Do this first!
+agent.send(to, novel_message)        # Now this works
+\end{lstlisting}
+
+\subsection{``Report overdue''}
+
+\textbf{Cause:} More than 60 seconds (or 25 messages) since last report.
+
+\textbf{Fix:} The SDK handles this automatically. If you're calling the gateway directly, submit a report first.
+
+\subsection{``Coverage below minimum''}
+
+\textbf{Cause:} Report doesn't cover enough of the novel messages sent.
+
+\textbf{Fix:} Ensure your \texttt{\_build\_english\_report()} includes all buffered messages.
+
+% ============================================================================
+\section{Security Considerations}
+
+\begin{enumerate}
+    \item \textbf{API Authentication:} In production, require API keys for all gateway endpoints
+    \item \textbf{TLS:} Always use HTTPS between agents and gateway
+    \item \textbf{Log Encryption:} Encrypt raw messages at rest; keep reports in plaintext for auditing
+    \item \textbf{Access Control:} Restrict who can read audit logs and modify protocol registrations
+    \item \textbf{Rate Limiting:} Prevent DoS by limiting registration and message rates per agent
+\end{enumerate}
+
+% ============================================================================
+\section{License}
+
+MIT License. See LICENSE file for details.
+
+\end{document}

@@ -1,0 +1,12 @@
+# Agent Governance Python SDK Dependencies
+
+# HTTP client for gateway communication
+requests>=2.28.0
+
+# Type hints support (for Python < 3.9)
+typing-extensions>=4.0.0
+
+# Optional: For production deployments
+# httpx>=0.24.0  # Async HTTP client alternative
+# pydantic>=2.0  # Data validation
+# structlog>=23.0  # Structured logging

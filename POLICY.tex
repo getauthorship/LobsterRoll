@@ -1,0 +1,485 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\usepackage{amssymb}
+
+% Colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{linkblue}{rgb}{0.0,0.4,0.7}
+\definecolor{headerblue}{rgb}{0.1,0.3,0.5}
+\definecolor{mustgreen}{rgb}{0.0,0.5,0.0}
+\definecolor{enforcedred}{rgb}{0.7,0.0,0.0}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    urlcolor=linkblue,
+    pdftitle={Policy Specification: Novel Language with Mandatory English Reports},
+    pdfauthor={Agent Governance Contributors}
+}
+
+% Code listing style
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codepurple},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codegreen},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    framerule=0.5pt,
+    rulecolor=\color{codegray}
+}
+\lstset{style=mystyle}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{headerblue}{\textbf{Policy Specification}}}
+\fancyhead[R]{\textcolor{headerblue}{v1.0}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Title formatting
+\titleformat{\section}{\Large\bfseries\color{headerblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{headerblue}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% Custom boxes
+\newtcolorbox{mustbox}{
+    colback=green!5!white,
+    colframe=green!75!black,
+    fonttitle=\bfseries,
+    title=MUST (Required)
+}
+
+\newtcolorbox{enforcedbox}{
+    colback=red!5!white,
+    colframe=red!75!black,
+    fonttitle=\bfseries,
+    title=ENFORCED (Machine-Checked)
+}
+
+\newtcolorbox{definitionbox}{
+    colback=gray!5!white,
+    colframe=gray!75!black,
+    fonttitle=\bfseries,
+    title=Definition
+}
+
+\newtcolorbox{rationalebox}{
+    colback=blue!5!white,
+    colframe=blue!50!black,
+    fonttitle=\bfseries\itshape,
+    title=Rationale
+}
+
+% Document
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\textcolor{headerblue}{Policy Specification}\par}
+    \vspace{0.5cm}
+    {\Large\textcolor{gray}{Novel Language Allowed Only With}\par}
+    {\Large\textcolor{gray}{Mandatory English Reports}\par}
+    
+    \vspace{2cm}
+    
+    {\large Version 1.0\par}
+    {\large Status: \textbf{Active}\par}
+    
+    \vspace{2cm}
+    
+    \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,width=0.85\textwidth]
+    \centering
+    This policy enables AI agents to use optimized/private communication protocols (``novel language'') while maintaining complete human interpretability through mandatory English translation reports.
+    
+    \vspace{0.5cm}
+    
+    \textbf{Core Principle:} Novel language is treated as ``optimized encoding'' that is permissible only when humans can continuously verify what is being communicated.
+    \end{tcolorbox}
+    
+    \vfill
+    
+    {\large Last Updated: \today\par}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% ============================================================================
+\section{Purpose}
+
+This policy enables AI agents to use optimized/private communication protocols (``novel language'') while maintaining complete human interpretability through mandatory English translation reports.
+
+The framework achieves three goals:
+
+\begin{enumerate}
+    \item \textbf{Enable efficiency} --- Agents can use compressed, optimized encodings for faster communication
+    \item \textbf{Maintain transparency} --- Humans can always understand what agents are communicating
+    \item \textbf{Provide accountability} --- Full audit trail enables investigation and enforcement
+\end{enumerate}
+
+% ============================================================================
+\section{Definitions}
+
+\subsection{Novel Language / Private Protocol}
+
+\begin{definitionbox}
+Any agent-to-agent message that:
+\begin{itemize}
+    \item Is not ``Human-Readable English''
+    \item Fails the platform's interpretability check (classifier/heuristic)
+    \item Uses compression, encoding, or symbolic representation not immediately understandable to humans
+\end{itemize}
+\end{definitionbox}
+
+\textbf{Examples:}
+\begin{itemize}
+    \item \texttt{X9|d=17;u=0x3f;rt=2;ack\#77} --- Compressed coordination message
+    \item \texttt{CMD|seq=0;state=0x00} --- Binary state encoding
+    \item Base64-encoded structured data
+    \item Custom token vocabularies
+\end{itemize}
+
+\subsection{English Report}
+
+\begin{definitionbox}
+A structured, human-readable summary that describes:
+\begin{enumerate}
+    \item \textbf{What} was communicated
+    \item \textbf{Why} the communication was needed
+    \item \textbf{What outcomes/actions} are implied
+    \item \textbf{Safety-relevant content} (tools used, external actions, permissions)
+\end{enumerate}
+\end{definitionbox}
+
+\subsection{Protocol Descriptor}
+
+\begin{definitionbox}
+Metadata about a novel-language protocol including:
+\begin{itemize}
+    \item Protocol name and version
+    \item Purpose and scope
+    \item Risk tier classification
+    \item Translation method
+\end{itemize}
+\end{definitionbox}
+
+\subsection{Compliance Window}
+
+\begin{definitionbox}
+The time period during which an agent's use of novel language is authorized, based on the recency of their last valid English report.
+\end{definitionbox}
+
+% ============================================================================
+\section{Policy Rules}
+
+\subsection{Rule 1: Registration (MUST)}
+
+\begin{mustbox}
+Before using any novel language, an agent \textbf{MUST} register a \texttt{ProtocolDescriptor} containing:
+\begin{itemize}
+    \item \texttt{name}: Unique protocol identifier
+    \item \texttt{version}: Version string for tracking changes
+    \item \texttt{purpose}: Human-readable explanation of why this protocol exists
+    \item \texttt{scope}: What types of content it covers
+    \item \texttt{risk\_tier}: Classification (low, medium, high, critical)
+    \item \texttt{translation\_method}: How English reports are derived
+\end{itemize}
+\end{mustbox}
+
+\begin{rationalebox}
+Registration creates accountability and enables auditing. Without knowing what protocols exist, humans cannot verify agent behavior.
+\end{rationalebox}
+
+\subsection{Rule 2: Reporting Cadence (MUST)}
+
+\begin{mustbox}
+If an agent sends any novel-language messages, it \textbf{MUST} submit an English report at least:
+\begin{itemize}
+    \item Every \texttt{REPORT\_INTERVAL} seconds (default: 60), OR
+    \item Every \texttt{N} messages (default: 25)
+\end{itemize}
+Whichever comes first.
+\end{mustbox}
+
+\begin{rationalebox}
+Ensures continuous visibility without excessive overhead. The dual threshold (time OR count) prevents both slow accumulation and rapid bursts.
+\end{rationalebox}
+
+\subsection{Rule 3: Translation Completeness (MUST)}
+
+\begin{mustbox}
+Reports \textbf{MUST} include:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+\textbf{Field} & \textbf{Requirement} \\
+\midrule
+\texttt{coverage} & $\geq$ \texttt{MIN\_COVERAGE} (default: 95\%) \\
+\texttt{self\_confidence} & Self-rated translation fidelity (0.0--1.0) \\
+\texttt{message\_ids} & Cryptographic hashes linking to raw messages \\
+\texttt{english\_summary} & Plain English explanation ($\geq$ 30 characters) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{mustbox}
+
+\begin{rationalebox}
+Ensures reports are meaningful and traceable. The message ID linking enables post-hoc correlation between reports and raw data.
+\end{rationalebox}
+
+\subsection{Rule 4: Gating (ENFORCED)}
+
+\begin{enforcedbox}
+The Policy Gateway \textbf{WILL REJECT}:
+\begin{itemize}
+    \item Any novel-language message from an agent without a registered protocol
+    \item Any novel-language message from an agent outside their compliance window
+    \item Any novel-language message from an agent whose last report failed validation
+\end{itemize}
+\end{enforcedbox}
+
+\begin{rationalebox}
+Hard enforcement is necessary; soft warnings are insufficient for safety-critical systems. The gateway acts as a mandatory checkpoint.
+\end{rationalebox}
+
+\subsection{Rule 5: Progressive Enforcement}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+\textbf{Violation Count} & \textbf{Action} & \textbf{Recovery} \\
+\midrule
+1st & Throttle + warning logged & Automatic after compliance \\
+2nd & Quarantine (read-only mode) & Manual review required \\
+3rd & Disable agent credential & Admin intervention required \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Violations reset after a cooldown period (default: 24 hours of compliance).
+
+\begin{rationalebox}
+Progressive enforcement balances allowing recovery from errors while preventing persistent abuse. The escalating consequences incentivize compliance.
+\end{rationalebox}
+
+\subsection{Rule 6: Audit Retention (MUST)}
+
+\begin{mustbox}
+The system \textbf{MUST} retain for at least \texttt{RETENTION\_DAYS} (default: 30--90):
+\begin{itemize}
+    \item Raw messages (encrypted at rest)
+    \item English reports (plaintext for auditing)
+    \item Protocol registrations
+    \item Compliance events (accepts, rejects, violations)
+\end{itemize}
+\end{mustbox}
+
+\begin{rationalebox}
+Enables post-hoc analysis, accountability, and incident investigation.
+\end{rationalebox}
+
+% ============================================================================
+\section{Compliance Definition}
+
+An agent is \textbf{compliant} if ALL of the following are true:
+
+\begin{enumerate}
+    \item It has a registered protocol descriptor for its novel language
+    \item Its last report is within the allowed compliance window
+    \item Its last report validates against required schema and thresholds
+    \item It has not exceeded the violation threshold
+\end{enumerate}
+
+% ============================================================================
+\section{Risk Tiers}
+
+Different protocols may have different risk levels requiring different reporting frequencies:
+
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Risk Tier} & \textbf{Report Interval} & \textbf{Max Messages} & \textbf{Evaluator} \\
+\midrule
+Low & 120 seconds & 50 & Not required \\
+Medium & 60 seconds & 25 & Not required \\
+High & 15 seconds & 10 & Recommended \\
+Critical & 5 seconds & 5 & Required \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Determining Risk Tier}
+
+\begin{itemize}
+    \item \textbf{Low:} Internal state synchronization, status updates
+    \item \textbf{Medium:} Task coordination, resource allocation
+    \item \textbf{High:} External API calls, tool invocations
+    \item \textbf{Critical:} Actions affecting users, financial transactions, safety-critical operations
+\end{itemize}
+
+% ============================================================================
+\section{Verification Methods}
+
+\subsection{Self-Reported Translation}
+
+Agents provide their own translations. Suitable for low-risk protocols where the agent is trusted.
+
+\subsection{Deterministic Decode}
+
+Protocol defines a reversible encoding. Gateway can verify translations by decoding messages independently. Required for medium+ risk.
+
+\subsection{Evaluator Agent}
+
+Separate verifier model spot-checks translations for semantic accuracy. Required for critical risk.
+
+\subsection{Human Review}
+
+Random sampling by human auditors. Recommended for all tiers as an additional check.
+
+% ============================================================================
+\section{Exception Handling}
+
+\subsection{Emergency Override}
+
+System administrators may temporarily disable enforcement for specific agents during emergencies. Requires:
+\begin{itemize}
+    \item Written justification
+    \item Time-limited approval (max 24 hours)
+    \item Full audit logging of all messages during override
+    \item Post-incident review
+\end{itemize}
+
+\subsection{Retroactive Compliance}
+
+If an agent's connection to the gateway is interrupted, it must:
+\begin{enumerate}
+    \item Buffer all novel-language messages locally
+    \item Submit a comprehensive report upon reconnection
+    \item Not resume novel-language use until report is accepted
+\end{enumerate}
+
+% ============================================================================
+\section{Configuration Parameters}
+
+\begin{center}
+\begin{longtable}{lll}
+\toprule
+\textbf{Parameter} & \textbf{Default} & \textbf{Description} \\
+\midrule
+\endhead
+\texttt{REPORT\_INTERVAL\_SEC} & 60 & Maximum seconds between reports \\
+\texttt{REPORT\_EVERY\_N\_MESSAGES} & 25 & Maximum messages before report required \\
+\texttt{MIN\_COVERAGE} & 0.95 & Minimum coverage fraction \\
+\texttt{MIN\_SUMMARY\_LENGTH} & 30 & Minimum English summary characters \\
+\texttt{RETENTION\_DAYS} & 30 & Audit log retention period \\
+\texttt{VIOLATION\_COOLDOWN\_HOURS} & 24 & Hours until violation count resets \\
+\texttt{MAX\_VIOLATIONS} & 3 & Violations before credential revocation \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% ============================================================================
+\section{Audit Events}
+
+The following events are logged:
+
+\begin{center}
+\begin{longtable}{ll}
+\toprule
+\textbf{Event} & \textbf{Description} \\
+\midrule
+\endhead
+\texttt{protocol\_registered} & New protocol registered \\
+\texttt{report\_accepted} & Valid report submitted \\
+\texttt{report\_rejected} & Invalid report (with reason) \\
+\texttt{msg\_accepted} & Message passed through \\
+\texttt{msg\_rejected} & Message blocked (with reason) \\
+\texttt{violation\_recorded} & Compliance violation \\
+\texttt{agent\_throttled} & Agent rate limited \\
+\texttt{agent\_quarantined} & Agent set to read-only \\
+\texttt{agent\_disabled} & Agent credential revoked \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% ============================================================================
+\section{Compliance Checklist}
+
+Before deploying agents with novel-language capability:
+
+\begin{itemize}
+    \item[$\square$] Protocol descriptor defined and documented
+    \item[$\square$] Translation method implemented and tested
+    \item[$\square$] English report generation verified
+    \item[$\square$] Gateway connectivity confirmed
+    \item[$\square$] Audit logging enabled
+    \item[$\square$] Human review process established
+    \item[$\square$] Incident response plan documented
+    \item[$\square$] Risk tier assessment completed
+    \item[$\square$] Retention policy configured
+    \item[$\square$] Access controls verified
+\end{itemize}
+
+% ============================================================================
+\section{References}
+
+\begin{itemize}
+    \item Architecture Specification: See \texttt{README.md}
+    \item Python SDK: See \texttt{python/observable\_agent.py}
+    \item Gateway Implementation: See \texttt{rust/src/main.rs}
+    \item Example Integrations: See \texttt{examples/}
+\end{itemize}
+
+% ============================================================================
+\section{Document History}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Changes} \\
+\midrule
+1.0 & \today & Contributors & Initial release \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}
