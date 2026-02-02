@@ -1,0 +1,48 @@
+# Docker Compose for Agent Governance Stack
+#
+# Usage:
+#   docker-compose up -d          # Start all services
+#   docker-compose logs -f        # View logs
+#   docker-compose down           # Stop all services
+#
+# Services:
+#   - policy-gateway: Rust enforcement gateway (port 8080)
+#   - demo-agent: Python agent example
+
+version: '3.8'
+
+services:
+  policy-gateway:
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - RUST_LOG=info
+    volumes:
+      - ./audit-logs:/var/log/audit
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # Example Python agent (uncomment to use)
+  # demo-agent:
+  #   build:
+  #     context: ./python
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     policy-gateway:
+  #       condition: service_healthy
+  #   environment:
+  #     - GATEWAY_URL=http://policy-gateway:8080
+  #     - GATEWAY_API_KEY=your-api-key
+  #   volumes:
+  #     - ./examples:/app/examples
+
+# Volumes for persistent data
+volumes:
+  audit-logs:
